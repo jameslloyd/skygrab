@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 RTSP = os.environ.get("RTSP")
+LATESTIMAGE = os.environ.get("LATESTIMAGE") or 'False'
 
 def grab_image(rtsp, location):
     vcap = cv2.VideoCapture(RTSP)
@@ -27,8 +28,17 @@ def main():
     location = os.path.join(topdir,dirpath,filename+'.png')
     if grab_image(RTSP,location):
         print(f"{location} grabbed successfully")
-    else:  
+        # create latest snapshot image, if enabled
+        if LATESTIMAGE == 'True':
+            latest_location = os.path.join(topdir,"latest")
+            if not os.path.isdir(latest_location):
+                print(f"making directory {latest_location}")
+                os.makedirs(latest_location)
+            print(f"saving to {latest_location}/snapshot.png")
+            shutil.copy(location, f"{latest_location}/snapshot.png")
+    else:
         print("Failed to grab image")
+
 
 if __name__ == '__main__':
     main()

@@ -9,6 +9,7 @@ Will generate an webm timelapse for the previous day at 00:05
 
 
 ### Config Variables
-INTERVAL (seconds, default=60)
-RTSP (URL, required, default=None)
-LATESTIMAGE (True/False, create latest image in /latest/ dir, default=False)
+
+- INTERVAL (seconds, default=60)
+- RTSP (URL, required, default=None)
+- LATESTIMAGE (True/False, create latest image in /latest/ dir, default=False)

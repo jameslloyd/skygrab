@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 import shutil
 import os
 
+# 'location' below is source path of images for timelapse
+
 def create_timelapse_video(location,outputdir,filename,res='1280:720',framerate = 25):
     outputfile = f'{outputdir}/{filename}-{res.replace(":","_")}.webm'
     if os.path.exists(outputfile):
@@ -17,13 +19,14 @@ def create_timelapse_video(location,outputdir,filename,res='1280:720',framerate 
     )    
 
 def main():
-    yesterday = datetime.now() - timedelta(-1) # yesterday
+    yesterday = datetime.now() - timedelta(1) # yesterday
     datetoprocess = datetime.strftime(yesterday, '%Y/%m/%d')
     filename = datetime.strftime(yesterday,'%Y%m%d')
-    if not os.path.isdir(datetoprocess):
+    location = "images/"+ datetoprocess
+    if not os.path.isdir(location):
         print(f"images/{datetoprocess} path does not exist")
     else:
-        create_timelapse_video(datetoprocess,'.','timelapse')
+        create_timelapse_video(location,'images/latest','timelapse')
     
 
 

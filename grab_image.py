@@ -7,11 +7,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "rtsp_transport;tcp"
 RTSP = os.environ.get("RTSP")
 LATESTIMAGE = os.environ.get("LATESTIMAGE") or 'False'
 
+
 def grab_image(rtsp, location):
-    vcap = cv2.VideoCapture(RTSP)
+    vcap = cv2.VideoCapture(rtsp, cv2.CAP_FFMPEG)
     if vcap.isOpened():
         ret, frame = vcap.read()
         cv2.imwrite(location, frame)

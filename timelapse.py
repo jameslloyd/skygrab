@@ -2,10 +2,22 @@ import ffmpeg
 from datetime import datetime, timedelta
 import shutil
 import os
+from PIL import Image
 
 # 'location' below is source path of images for timelapse
 
-def create_timelapse_video(location,outputdir,filename,res='1280:720',framerate = 25):
+def get_first_image_size(location):
+    # Find the first PNG file in the directory
+    for fname in sorted(os.listdir(location)):
+        if fname.lower().endswith('.png'):
+            with Image.open(os.path.join(location, fname)) as img:
+                return img.width, img.height
+    raise FileNotFoundError("No PNG images found in the directory.")
+
+def create_timelapse_video(location,outputdir,filename,res=None,framerate = 25):
+    if res is None:
+        width, height = get_first_image_size(location)
+        res = f"{width}:{height}"
     outputfile = f'{outputdir}/{filename}-{res.replace(":","_")}.webm'
     if os.path.exists(outputfile):
         print(f"Removing existing {outputfile}")
